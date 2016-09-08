@@ -19,8 +19,5 @@
   notify:
   - restart node
 
-#- name: Restarting node
-#  become: true
-#  shell: "reboot now"
-#  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
+- meta: flush_handlers
 

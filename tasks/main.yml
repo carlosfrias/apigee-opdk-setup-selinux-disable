@@ -13,8 +13,14 @@
   debug:
     msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"
-  notify:
-  - restart node
 
-- meta: flush_handlers
+- name: Restart node
+  shell: 'reboot now'
+  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
+
+#
+#  notify:
+#  - restart node
+#
+#- meta: flush_handlers
 

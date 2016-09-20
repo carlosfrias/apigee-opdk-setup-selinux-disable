@@ -26,4 +26,3 @@
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"
   async: 45
   poll: 0
-

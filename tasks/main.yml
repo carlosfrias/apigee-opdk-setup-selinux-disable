@@ -1,26 +1,29 @@
 ---
 # tasks file for opdk-setup-selinux-disable
-- name: Permanently disable SELINUX
-  lineinfile:
-    dest: /etc/selinux/config
-    regexp: "^(SELINUX=)"
-    line: '\1disabled'
-    backrefs: yes
-    backup: yes
-  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
+- block:
+  - name: Permanently disable SELINUX
+    lineinfile:
+      dest: /etc/selinux/config
+      regexp: "^(SELINUX=)"
+      line: '\1disabled'
+      backrefs: yes
+      backup: yes
+    when: "{{ ansible_selinux.status | lower != 'disabled' }}"
 
-- name: Refresh setup facts
-  setup:
+  - name: Refresh setup facts
+    setup:
 
-- name: Restart playbook if selinux is running
-  debug:
-    msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
-  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
+  - name: Restart playbook if selinux is running
+    debug:
+      msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
+    when: "{{ ansible_selinux.status | lower != 'disabled' }}"
 
-- name: Restarting node now
-  become: true
-  ignore_errors: yes
-  shell: 'reboot now'
-  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
-  async: 45
-  poll: 0
+  - name: Restarting node now
+    become: true
+    ignore_errors: yes
+    shell: 'reboot now'
+    when: "{{ ansible_selinux.status | lower != 'disabled' }}"
+    async: 45
+    poll: 0
+
+  when: ansible_selinux is defined

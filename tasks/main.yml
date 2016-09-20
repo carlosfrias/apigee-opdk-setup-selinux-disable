@@ -16,8 +16,6 @@
   debug:
     msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"
-  notify:
-  - 'restart node'
 
 - name: Restarting node now
   become: true

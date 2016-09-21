@@ -12,7 +12,7 @@
 - name: Refresh setup facts
   setup:
 
-- name: Restart playbook if selinux is running
+- name: Restart node
   debug:
     msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"

@@ -24,3 +24,8 @@
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"
   async: 45
   poll: 0
+
+- name: Waiting for node to return
+  wait_for:
+    state=started
+    port=22

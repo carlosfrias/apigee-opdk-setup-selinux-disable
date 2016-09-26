@@ -28,9 +28,6 @@
     poll: 0
 
   rescue:
+
   - name: Waiting for node to return
-    local_action:
-      wait_for:
-        state: started
-        host: '{{ inventory_host }}'
-        port: 22
+    local_action: wait_for state=started host='{{ inventory_host }}' port=22

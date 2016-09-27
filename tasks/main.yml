@@ -27,7 +27,11 @@
     async: 45
     poll: 0
 
-  rescue:
+  always:
 
   - name: Waiting for node to return
-    local_action: wait_for state=started host='{{ inventory_host }}' port=22
+    wait_for:
+     state: started
+     host: '{{ ansible_ssh_host | default(inventory_hostname) }}'
+     port: 22
+     delay: 60

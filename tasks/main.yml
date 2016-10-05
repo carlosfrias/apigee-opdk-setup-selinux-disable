@@ -22,6 +22,7 @@
 
 - name: Restarting node now
   ignore_errors: yes
+  become: yes
   shell: 'reboot now'
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"
   async: 0

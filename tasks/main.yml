@@ -20,10 +20,14 @@
     msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"
 
-#- name: Restarting node now
-#  become: true
-#  ignore_errors: yes
-#  shell: 'reboot now'
-#  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
-#  async: 45
-#  poll: 0
+- name: Restarting node now
+  become: true
+  ignore_errors: yes
+  shell: 'reboot now'
+  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
+  async: 0
+  poll: 0
+
+- name: Waiting for server to complete reboot cycle
+  local_action: wait_for port='{{ ansible_port }}' state=started
+

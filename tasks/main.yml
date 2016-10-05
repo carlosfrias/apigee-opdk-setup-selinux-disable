@@ -7,7 +7,7 @@
 
 - name: Restart node
   fail:
-    msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
+    msg: 'SELinux MUST be disabled, selinux has been updated, restart node now...'
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"
 
 #- name: Restarting node now

@@ -1,14 +1,4 @@
 ---
-# tasks file for opdk-setup-selinux-disable
-#- name: Permanently disable SELINUX
-#  lineinfile:
-#    dest: /etc/selinux/config
-#    regexp: "^(SELINUX=)"
-#    line: '\1disabled'
-#    backrefs: yes
-#    backup: yes
-#  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
-
 - name: Permanently disable SELINUX
   selinux: state=disabled
 

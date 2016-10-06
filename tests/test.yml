@@ -1,5 +1,12 @@
 ---
-- hosts: localhost
-  remote_user: root
+- hosts: planet
+  pre_tasks:
+  - name: Required packages for test
+    yum:
+      name: '{{ item }}'
+      state: present
+    with_items:
+    - libselinux-python
+
   roles:
-    - opdk-setup-selinux-disable
+    - apigee-opdk-setup-selinux-disable

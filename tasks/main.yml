@@ -24,5 +24,6 @@
   when: "{{ ansible_selinux.status | lower != 'disabled' and (server_restart is defined and server_restart | bool )}}"
 
 - name: Server usually needs a little more time ...
-  pause: seconds=30
+  become: no
+  local_action: wait_for host='{{ ansible_host }}' state=started delay=30
   when: "{{ ansible_selinux.status | lower != 'disabled' and (server_restart is defined and server_restart | bool )}}"

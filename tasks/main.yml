@@ -6,22 +6,21 @@
   setup:
 
 - name: Restart node
-  fail:
-    msg: 'SELinux MUST be disabled, selinux has been updated, restart node now...'
+  debug:
+    msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
   when: "{{ ansible_selinux.status | lower != 'disabled' }}"
 
-#- name: Restarting node now
-#  ignore_errors: yes
-#  become: yes
-#  shell: 'reboot now'
-#  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
-#  async: 0
-#  poll: 0
+- name: Restarting node now
+  ignore_errors: yes
+  become: yes
+  shell: 'reboot now'
+  when: "{{ ansible_selinux.status | lower != 'disabled' }}"
+  async: 0
+  poll: 0
 
-#  Requires sudo on the control server
-#- name: Waiting for server to complete reboot cycle
-#  wait_for:
-#    host: '{{ inventory_hostname }}'
-#    port: '{{ ansible_port }}'
-#    state: started
+- name: Waiting for server to complete restarting
+  become: no
+  local_action: wait_for host='{{ ansible_host }}' state=started delay=60 timeout='{{ server_restart_timeout }}'
+  when: "{{ ansible_selinux.status | lower != 'disabled' and (server_restart is defined and server_restart | bool )}}"
+
 

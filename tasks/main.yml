@@ -4,7 +4,7 @@
 
 - name: Set restart_needed
   set_fact:
-    restart_needed: ansible_selinux.status | lower != 'disabled' | bool
+    restart_needed: "{{ ansible_selinux.status | lower == 'disabled' | bool }}"
 
 - name: Permanently disable SELINUX
   selinux: state=disabled
@@ -25,7 +25,7 @@
 
 - name: Waiting for server to complete restarting
   become: no
-  local_action: wait_for host='{{ ansible_host }}' state=started delay=60 timeout='{{ server_restart_timeout }}'
+  local_action: wait_for host='{{ ansible_host }}' state=started delay=60 timeout='{{ server_restart_timeout | d(720) }}'
   when: restart_needed
 
 - name: Server usually needs a little more time ...

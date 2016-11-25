@@ -4,7 +4,7 @@
 
 - name: Set restart_needed
   set_fact:
-    restart_needed: "{{ ansible_selinux.status | lower == 'disabled' | bool }}"
+    restart_needed: "{{ ansible_selinux.status | lower != 'disabled' | bool }}"
 
 - name: Permanently disable SELINUX
   selinux: state=disabled

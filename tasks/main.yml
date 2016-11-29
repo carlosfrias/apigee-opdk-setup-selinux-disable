@@ -8,7 +8,7 @@
 
 - name: Set disabled
   set_fact:
-    disabled: "{{ ansible_selinux.status | lower == 'disabled' | bool }}"
+    disabled: "{{ ansible_selinux.status == 'disabled' }}"
 
 - name: Permanently disable SELINUX
   selinux: state=disabled

@@ -2,6 +2,10 @@
 - name: Refresh setup facts
   setup:
 
+- name: Report selinux status
+  debug:
+    var: ansible_selinux.status
+
 - name: Set disabled
   set_fact:
     disabled: "{{ ansible_selinux.status | lower == 'disabled' | bool }}"

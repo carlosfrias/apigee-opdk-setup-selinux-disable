@@ -8,31 +8,31 @@
 
 - name: Set disabled
   set_fact:
-    disabled: "{{ ansible_selinux.status == 'disabled' }}"
+    selinux_disabled: "{{ ansible_selinux.status == 'disabled' }}"
 
 - name: Permanently disable SELINUX
   selinux: state=disabled
-  when: not disabled
+  when: not selinux_disabled
 
 - name: Restart node
   debug:
     msg: 'SELinux MUST be disabled, selinux has been updated, restarting node now...'
-  when: not disabled
+  when: not selinux_disabled
 
 - name: Restarting node now
   ignore_errors: yes
   become: yes
   shell: 'reboot now'
-  when: not disabled
+  when: not selinux_disabled
   async: 0
   poll: 0
 
 - name: Waiting for server to complete restarting
   become: no
-  local_action: wait_for host='{{ ansible_host }}' state=started delay={{ start_check_delay | d(15) }} timeout='{{ server_restart_timeout | d(60) }}'
-  when: not disabled
+  local_action: wait_for host='{{ ansible_host }}' state=started delay={{ start_check_delay | d(5) }} timeout='{{ server_restart_timeout | d(30) }}'
+  when: not selinux_disabled
 
 - name: Server usually needs a little more time ...
   become: no
-  local_action: wait_for host='{{ ansible_host }}' state=started delay={{ start_check_delay | d(15) }}
-  when: not disabled
+  local_action: wait_for host='{{ ansible_host }}' state=started delay={{ start_check_delay | d(5) }}
+  when: not selinux_disabled

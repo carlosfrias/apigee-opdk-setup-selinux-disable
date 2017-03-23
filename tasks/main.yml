@@ -6,7 +6,7 @@
   debug:
     var: ansible_selinux.status
 
-- name: Set disabled
+- name: Indicate whether selinux is disabled
   set_fact:
     selinux_disabled: "{{ ansible_selinux.status == 'disabled' }}"
 

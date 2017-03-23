@@ -7,8 +7,9 @@
     var: ansible_selinux.status
 
 - name: Indicate whether selinux is disabled
-  set_fact:
-    selinux_disabled: "{{ ansible_selinux.status == 'disabled' }}"
+  cache:
+    key: selinux_disabled
+    value: "{{ ansible_selinux.status == 'disabled' }}"
 
 - name: Permanently disable SELINUX
   selinux: state=disabled

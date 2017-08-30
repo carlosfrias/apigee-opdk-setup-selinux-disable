@@ -9,7 +9,7 @@
 - name: Indicate whether selinux is disabled
   cache:
     key: 'selinux_disabled'
-    value: "{{ ansible_selinux.status == 'disabled' }}"
+    value: "{{ ansible_selinux.status == 'disabled' | bool }}"
 
 - name: Permanently disable SELINUX
   selinux: state=disabled

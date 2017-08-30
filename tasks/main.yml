@@ -13,9 +13,9 @@
 
 - name: Permanently disable SELINUX
   selinux: state=disabled
-  when: not selinux_disabled
+  when: selinux_disabled == False | bool
 
 - name: Restart node
   debug:
     msg: 'SELinux MUST be disabled, selinux has been updated, please restart node now...'
-  when: not selinux_disabled
+  when: selinux_disabled == False | bool

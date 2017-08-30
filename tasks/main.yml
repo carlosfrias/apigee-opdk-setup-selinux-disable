@@ -9,13 +9,13 @@
 - name: Indicate whether selinux is disabled
   cache:
     key: 'selinux_disabled'
-    value: "{{ ansible_selinux.status == 'disabled' | bool }}"
+    value: "{{ ansible_selinux.status == 'disabled' }}"
 
 - name: Permanently disable SELINUX
   selinux: state=disabled
-  when: selinux_disabled == false | bool
+  when: selinux_disabled == 'false'
 
 - name: Restart node
   debug:
     msg: 'SELinux MUST be disabled, selinux has been updated, please restart node now...'
-  when: selinux_disabled == false | bool
+  when: selinux_disabled == 'false'

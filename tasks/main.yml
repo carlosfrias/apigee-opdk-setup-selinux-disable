@@ -2,10 +2,6 @@
 - name: Refresh setup facts
   setup:
 
-#- name: Report selinux status
-#  debug:
-#    var: ansible_selinux.status
-
 - name: Indicate whether selinux is disabled
   cache:
     key: 'selinux_disabled'

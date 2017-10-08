@@ -8,9 +8,16 @@
     value: "{{ ansible_selinux.status == 'disabled' }}"
 
 - name: Permanently disable SELINUX
-  selinux: state=disabled
+  selinux:
+    state: disabled
   when:  ansible_selinux.status == 'enabled'
   register: selinux_disabled
+
+- name: Persist SELINUX disableD state
+  lineinfile:
+    path: /etc/sysconfig/selinux
+    line: 'SELINUX=disabled'
+    regex: '^SELINUX=.*'
 
 - name: Restart node
   debug:

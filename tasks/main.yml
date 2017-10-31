@@ -7,17 +7,19 @@
     key: 'selinux_disabled'
     value: "{{ ansible_selinux.status == 'disabled' }}"
 
-- name: Permanently disable SELINUX
-  selinux:
-    state: disabled
-  when:  ansible_selinux.status == 'enabled'
-  register: selinux_disabled
+- block:
+  - name: Permanently disable SELINUX
+    selinux:
+      state: disabled
+    when:  ansible_selinux.status == 'enabled'
+    register: selinux_disabled
 
-- name: Persist SELINUX disableD state
-  lineinfile:
-    path: /etc/sysconfig/selinux
-    line: 'SELINUX=disabled'
-    regexp: '^SELINUX=.*'
+  - name: Persist SELINUX disableD state
+    lineinfile:
+      path: /etc/sysconfig/selinux
+      line: 'SELINUX=disabled'
+      regexp: '^SELINUX=.*'
+  become: yes
 
 - name: Restart node
   debug:

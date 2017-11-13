@@ -14,7 +14,7 @@
     when:  ansible_selinux.status == 'enabled'
     register: selinux_disabled
 
-  - name: Persist SELINUX disableD state
+  - name: Persist SELINUX disabled state
     lineinfile:
       path: /etc/sysconfig/selinux
       line: 'SELINUX=disabled'

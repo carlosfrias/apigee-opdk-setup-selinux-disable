@@ -3,9 +3,9 @@
   setup:
 
 - name: Indicate whether selinux is disabled
-  cache:
-    key: 'selinux_disabled'
-    value: "{{ ansible_selinux.status == 'disabled' }}"
+  set_fact:
+    cacheable: yes
+    selinux_disabled: "{{ ansible_selinux.status == 'disabled' }}"
 
 - name: Confirm existence of selinux config file
   stat:
